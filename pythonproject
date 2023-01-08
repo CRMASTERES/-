@@ -1,0 +1,253 @@
+import sys
+from PyQt5 import uic, QtCore, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QRadioButton, \
+    QLabel, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QPushButton, \
+    QButtonGroup
+import webbrowser
+from random import randint
+
+class MyWidget(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        uic.loadUi('glmen.ui', self)
+
+        self.label.setWordWrap(True)  # +++
+
+        self.otvleg = ["Катлог", "Файл"]
+        self.otvlek = ["Католог"]
+
+        self.pushButton.clicked.connect(self.exit)
+        self.pushButton_4.clicked.connect(self.legk)
+        self.pushButton_3.clicked.connect(self.sred)
+        self.pushButton_2.clicked.connect(self.sloz)
+
+        self.n = 0
+        self.stas = True
+        self.man = True
+        self.ans1 = QRadioButton('ans1', self)
+        self.ans1.resize(500, 30)
+        self.ans1.move(250, 170)
+        self.ans1.setVisible(False)
+
+        self.ans2 = QRadioButton('ans2', self)
+        self.ans2.resize(500, 30)
+        self.ans2.move(250, 220)
+        self.ans2.setVisible(False)
+
+        self.ans3 = QRadioButton('ans3', self)
+        self.ans3.resize(500, 30)
+        self.ans3.move(250, 270)
+        self.ans3.setVisible(False)
+
+        self.ans4 = QRadioButton('ans4', self)
+        self.ans4.resize(500, 30)
+        self.ans4.move(250, 320)
+        self.ans4.setVisible(False)
+
+        self.ssil = QPushButton('Исходный код', self)
+        self.ssil.resize(150,30)
+        self.ssil.move(615,550)
+
+
+        self.btn_group = QButtonGroup(self)
+        self.btn_group.addButton(self.ans1)
+        self.btn_group.addButton(self.ans2)
+        self.btn_group.addButton(self.ans3)
+        self.btn_group.addButton(self.ans4)
+
+        self.s = 0
+        self.count = 0
+        self.voprleg = ["Как называется группа файлов, которая хранится "
+                       "отдельной группой и имеет собственное имя ?","Как называют файлы содержащие рисунки, тексты?","Сколько байтов в одном в одном килобайте?",
+                        "Комплект расположенных в определённом порядке клавиш для управления каким-либо устройством или для ввода данных это",
+                        "Мозг компьютера - это...?",'Что из перечисленного ниже относится к логическим связкам?',
+                        'Что можно сделать прежде всего, если при поиске находится слишком большое количество страниц?',
+                        'Что из этого является названием операционной системы?','Кем поставляются драйверы различных устройств?',
+                        'Без какой части программного обеспечения пользователю было бы сложно работать с компьютером?']
+        self.otvleg = ["Каталог", "Графические", "1024", "Клавиатура", "Процессор",'«&», «|», «-»','Добавить еще одно ключевое слово','Linux',
+                       'Производителями устройств','Без операционной системы']
+        self.varleg = ['Каталог', "Текстовые", "1048", "Монитор", "Видеокарта",'«&», «|», «-»','Начать поиск в другой поисковой системе','BIOS'
+                       'Пользователем компьютера','Без сервисных программ']
+        self.varleg2 = ['Компьютер', "Документы", "1024", "Наушники", "Процессор",'«+», «±», «-»','Добавить еще одно ключевое слово','Intel',
+                        'Сторонними организациями, занимающимися разработкой драйверов','Без операционной системы']
+        self.varleg3 = ['Жесткий диск', "Графические", "1064", "Коврик для мышки", "Блок питания",'«&», «и», «+»','Изменить ключевое слово','Linux',
+                        'Производителем операционной системы','Без прикладного ПО']
+        self.varleg4 = ['Системный блок', "Папки", "1056", "Клавиатура", "Системный блок",'«h», «и», «*»','Выбрать другую поисковую систему','Razer',
+                        'Производителями устройств','Без пасьянса']
+
+
+        self.voprsr =["Что такое HTTP?","Какой сервис Интернета сокращённо обозначается как WWW?","Что такое фишинг?",
+                      "Что рекомендуется делать с любым скачанным из Интернета файлом?","Какая величина характеризует скорость передачи информации?",
+                      'Какой язык является основным языком информационного моделирования?',
+                      'В какой науке также рассматривается множество функциональных зависимостей, представляющие собой математические модели?',
+                      'Как называются интерактивные многопользовательские веб-сайты, контент которых создаётся участниками сети?',
+                      'Что как правило требуется для пользования сервисами Интернета?','Что представляет собой размерность массива?']
+        self.otvsr = ["Протокол передачи гипертекстовых файлов","Всемирная паутина","Вид мошенничества с целью получения логина и пароля пользователя",
+                      "Проверять антивирусом","бит/с",'Язык математики','В физике','Социальные сети','Авторизация','Количество индексов, которое необходимо для однозначного доступа к элементу массива']
+        self.varsr = ["Адрес документа в Интернете","Всемирная паутина","Вид заработка в Интернете","Проверять антивирусом","км/c",'Язык математики',
+                      'В логике','Блоги','Мышка','Количество индексов, которое необходимо для однозначного доступа к элементу массива']
+        self.varsr2 = ["Протокол передачи гипертекстовых файлов","Файловые архивы","Передача данных по незащищённому каналу","Архивировать","Гбайт/ч",'Язык механики',
+                       'В физике','Паста','Профессиональное образование','Количество индексов, которое содержат все элементы массива']
+        self.varsr3 = ["Необязательная часть при вводе адреса сайта","Электронная почта","Вид мошенничества с целью получения логина и пароля пользователя",
+                       "Передавать другим людям","км/ч",'Язык логики','В биологии','Телеконференции','Авторизация','Количество индексов, которое необходимо для доступа ко всем элементам массива']
+        self.varsr4 = ["Протокол для передачи данных сайту","Социальные сети","База данных сайта","Переименовывать","бит/с",'Русский язык','В черчении',
+                       'Социальные сети','Паспортные данные','Количество индексов, которое необходимо для входа в сеть интернет']
+
+
+        self.voprsl = ["Что такое язык HTML?","Что такое JavaScript?",'Сколько входов и выходов должна иметь каждая из трёх базовых управляющих конструкций?',
+                       'Как называется алгоритм, который целиком используется в составе другого алгоритма?',
+                       'Как называется подпрограмма, которая имеет произвольное количество входных и выходных данных?',
+                       'Как называется алгоритм, который на каком-либо шаге обращается сам к себе?',
+                       'Из каких трёх базовых конструкций состоит любая программа?',
+                       'Что такое алгоритм CRC, применяемый для обнаружения искажений в файле с единовременным большим числом ошибок?',
+                       'Какое минимальное расстояние между словами в семибитном коде Хэмминга?']
+        self.otvsl = ["Язык разметки гипертекста","Язык веб-программирования",'Один вход и один выход','вспомогательный','процедура',
+                      'рекурсивным','Последовательности, ветвления, цикла','Это циклический избыточный код','3']
+        self.varsl = ["Язык, созданный для создания стилей элементов интерфейса ","Язык веб-программирования",'Три входа и один выход','вспомогательный',
+                      'алгоритм','циклическим','Последовательности, ветвления, цикла','Это код интернет соединения','1']
+        self.varsl2 = ["Язык разметки гипертекста","Протокол передачи гипертекста",'Один вход и два выхода', 'служебный','процедура','вспомогательным',
+                       'Последовательности, разветвления, реструкции','Это криптографическая хэш-функция','2']
+        self.varsl3 = ["Язык программирования для создания скриптов, выполняемых в браузере","Веб-браузер",'Два входа и два выхода','циклический',
+                       'функция','рекурсивным','Последовательности, реструкции, вспомогательной конструкции','Это арифметический битовый код','3']
+        self.varsl4 = ["Язык программирования для создания сайта","Антивирусная система",'Один вход и один выход','подпрограммный','метод','ожидающий',
+                       'Последоательности, повторение','Это циклический избыточный код','4']
+        self.v = 0
+        self.btn_group.buttonClicked.connect(self.radio)
+        self.ssil.clicked.connect(lambda: webbrowser.open('https://github.com/CRMASTERES/-.git'))
+
+    def legk(self):
+        if self.stas == True:
+            self.pushButton_3.deleteLater()
+            self.pushButton_2.deleteLater()
+            self.pushButton_4.move(250,400)
+            self.pushButton_4.setText("Подтвердить ответ")
+            self.pushButton.deleteLater()
+            self.ssil.setVisible(False)
+            self.stas = False
+
+
+        if self.n in self.otvleg:
+            self.count += 1
+
+        if self.s == 5:
+            self.ans1.deleteLater()
+            self.ans2.deleteLater()
+            self.ans3.deleteLater()
+            self.ans4.deleteLater()
+            self.pushButton_4.setText("OK")
+            self.label.setText(f"Ваш результат {self.count} из 5")
+        else:
+            self.v = randint(0, len(self.voprleg) - 1)
+            self.label.setText(self.voprleg[self.v])
+            self.ans1.setText(self.varleg[self.v])
+            self.ans2.setText(self.varleg2[self.v])
+            self.ans3.setText(self.varleg3[self.v])
+            self.ans4.setText(self.varleg4[self.v])
+            self.ans1.setVisible(True)
+            self.ans2.setVisible(True)
+            self.ans3.setVisible(True)
+            self.ans4.setVisible(True)
+            self.s += 1
+            self.n = " "
+            del self.voprleg[self.v]
+            del self.varleg[self.v]
+            del self.varleg2[self.v]
+            del self.varleg3[self.v]
+            del self.varleg4[self.v]
+
+
+            self.v = 0
+
+    def sred(self):
+        if self.stas == True:
+            self.pushButton_4.deleteLater()
+            self.pushButton_2.deleteLater()
+            self.pushButton_3.move(250,400)
+            self.pushButton_3.setText("Подтвердить ответ")
+            self.pushButton.deleteLater()
+            self.ssil.setVisible(False)
+            self.stas = False
+
+        if self.n in self.otvsr:
+            self.count += 1
+
+        if self.s == 5:
+            self.ans1.deleteLater()
+            self.ans2.deleteLater()
+            self.ans3.deleteLater()
+            self.ans4.deleteLater()
+            self.pushButton_3.setText("OK")
+            self.label.setText(f"Ваш результат {self.count} из 5")
+        else:
+            self.v = randint(0, len(self.voprsr) - 1)
+            self.label.setText(self.voprsr[self.v])
+            self.ans1.setText(self.varsr[self.v])
+            self.ans2.setText(self.varsr2[self.v])
+            self.ans3.setText(self.varsr3[self.v])
+            self.ans4.setText(self.varsr4[self.v])
+            self.ans1.setVisible(True)
+            self.ans2.setVisible(True)
+            self.ans3.setVisible(True)
+            self.ans4.setVisible(True)
+
+            self.s += 1
+            self.n = " "
+
+            del self.voprsr[self.v]
+            del self.varsr[self.v]
+            del self.varsr2[self.v]
+            del self.varsr3[self.v]
+            del self.varsr4[self.v]
+
+    def sloz(self):
+        if self.stas == True:
+            self.pushButton_4.deleteLater()
+            self.pushButton_3.deleteLater()
+            self.pushButton_2.move(250,400)
+            self.pushButton_2.setText("Подтвердить ответ")
+            self.pushButton.deleteLater()
+            self.ssil.setVisible(False)
+            self.stas = False
+
+        if self.n in self.otvsl:
+            self.count += 1
+
+        if self.s == 5:
+            self.ans1.deleteLater()
+            self.ans2.deleteLater()
+            self.ans3.deleteLater()
+            self.ans4.deleteLater()
+            self.pushButton_2.setText("OK")
+            self.label.setText(f"Ваш результат {self.count} из 5")
+        else:
+            self.v = randint(0, len(self.voprsl) - 1)
+            self.label.setText(self.voprsl[self.v])
+            self.ans1.setText(self.varsl[self.v])
+            self.ans2.setText(self.varsl2[self.v])
+            self.ans3.setText(self.varsl3[self.v])
+            self.ans4.setText(self.varsl4[self.v])
+            self.ans1.setVisible(True)
+            self.ans2.setVisible(True)
+            self.ans3.setVisible(True)
+            self.ans4.setVisible(True)
+
+            self.s += 1
+            self.n = " "
+
+            del self.voprsl[self.v]
+            del self.varsl[self.v]
+            del self.varsl2[self.v]
+            del self.varsl3[self.v]
+            del self.varsl4[self.v]
+    def radio(self, button):
+        self.n = button.text()
+
+    def exit(self):
+        self.close()
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    w = MyWidget()
+    w.show()
+    sys.exit(app.exec())
